@@ -1,0 +1,175 @@
+
+===========================Initial User create or create admin if no users middleware=============
+const mongoose = require('mongoose');
+const User = require('./models/user'); // Your user model
+
+const mongoDB = process.env.MONGODB_URI || 'mongodb://localhost/mydb'; // Your MongoDB connection string
+
+async function createInitialAdminUser() {
+  try {
+    await mongoose.connect(mongoDB);
+    const existingUsers = await User.countDocuments();
+
+    if (existingUsers === 0) {
+      // Create an initial admin user
+      await User.create({
+        username: 'admin',
+        password: 'adminpassword', // Hashed password in production
+        role: 'Admin',
+      });
+      console.log('Initial admin user created.');
+    } else {
+      console.log('Admin user already exists.');
+    }
+
+    // Close the database connection
+    await mongoose.disconnect();
+  } catch (error) {
+    console.error('Error creating initial admin user:', error);
+  }
+}
+
+// Call this function during deployment or initialization
+createInitialAdminUser();
+
+
+===============================user details fetch for find user by admin ========================
+  <div class="userdetails">
+      
+    <h1>User Details</h1>
+    <form action="/search" method="get">
+        <label for="username">Username:</label>
+        <input id="username" type="text" value="<%= userfound.username %>" readonly><br>
+        <label for="location">Email:</label>
+        <input id="location" type="text" value="<%= userfound.location %>" readonly><br>
+        <label for="fullName">Name:</label>
+        <input id="fullName" type="text" value="<%= userfound.fullName %>" readonly><br>
+        
+    </form>
+    </div> 
+============================== isAdmin ==================================
+    async function isAdmin(req, res, next) {
+    try {
+           const user = await userModel.findOne({ username: req.user.username });
+
+        if (user.role === "admin") {
+            // User is an admin, proceed to the next middleware
+            return next();
+        } else {
+            // User is not an admin, redirect to the home page
+            req.flash("error", "You need to be logged in as an admin for this action.");
+            res.redirect("/");
+        }
+    } catch (error) {
+        // Handle any errors (e.g., database connection issues)
+        console.error("Error in isAdmin middleware:", error);
+        res.status(500).send("Internal Server Error");
+    }
+}
+
+=======================================  export userdata for  admin overview ==================================
+ //export userdata to .xlsx for admin
+router.get('/exportuserdata', async function(req, res){
+    try {
+      const Workbook = new exceljs.Workbook();
+      const worksheet = Workbook.addWorksheet("usersdata");
+      worksheet.columns = [
+        {header: 'S/N', key: "s_no"},
+        {header: 'Employee Code', key: "empCode"},
+        {header: 'Email', key: "username"},
+        {header: 'Name', key: "fullName"},
+        {header: 'Contact', key: "contact"},
+        {header: 'Industry', key: "industry"},
+        {header: 'available Dates', key: "dates"}
+      ];
+      let counter = 1;
+      const userdata = await userModel.find({});
+      userdata.forEach(user => {
+        user.s_no = counter;
+        worksheet.addRow(user);
+        counter++;
+      })
+      
+      worksheet.getRow(1).eachCell((cell) => {
+        cell.font = {bold: true};
+      });
+
+      res.setHeader(
+        "Content-Type",
+        "application/vndopenxmlformats-officedocument.spreadsheatml.sheet"
+      );
+      res.setHeader("Content-Disposition", `attachment; filename=usersdata.xlsx`);
+      return Workbook.xlsx.write(res).then( () => {
+          res.status(200);
+      });
+
+    } catch (error) {
+      console.log(error.message);
+    }
+});
+============================   error messages  ====================
+
+
+<!-- <% if(locals.errors){ %> <% errors.forEach(function(error) { %>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <%= error.msg %>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<% }); %> <% } %> <% if(success_msg != ''){ %>
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <%= success_msg %>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<% } %> <% if(error_msg != ''){ %>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <%= error_msg %>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<% } %> <% if(error != ''){ %>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <%= error %>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<% } %> -->
+
+=====================  last date restriction ==================
+const today = new Date();   // last date to submit selection   .dev
+  if (today.getDate() >= 4) {
+    res.send(
+      '<script>alert("Availability dates can be submitted on or before 3rd of each month."); window.location.href = "/profile";</script>'
+    );
+  } else {
+    try {
+      const user = await userModel.findOne({
+        username: req.session.passport.user,
+      });
+      console.log(user);
+      // Find the user by username
+      //const user = await User.findOne({ username });
+
+      if (!user) {
+        return res.send("user not found"); // status(404).json({ message: 'User not found' });
+      }
+
+      // Add the dates to the user's "dates" array
+      user.dates = dates;
+
+      // Save the updated user
+      await user.save();
+
+      return res.render("submitdate", { user });
+
+      //return res.status(200).json({ message: "Dates saved successfully" });
+    } catch (error) {
+      console.error("Error saving dates:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }

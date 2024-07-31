@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search result</title>
+    <link rel="stylesheet" href="https://use.typekit.net/oov2wcw.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <Div class=" nav bg-red-400 px-10 flex justify-between w-full">
+      <a class="mt-2 px-5 py-1 text-3xl font-semibold flex left" href="/">
+        <img src="/images/logo-ic.png" alt="Chrysalis Logo ic" />
+        <img src="/images/logo-tx.png" alt="Chrysalis Logo tx" />
+      </a>
+
+      <a
+        class="flex flex-col justify-center text-center px-5 py-5 bg-red-500 font-semibold rounded-lg hover:bg-red-600 text-white"
+        href="/logout"
+        >Logout</a
+      >
+    </Div>
+
+    <div>
+      <h1 class="title flex flex-col justify-center text-center text-3xl m-10">
+        Search result
+      </h1>
+    </div>
+
+    <div class="usersearched">
+      <h1 class="text-2xl flex flex-col justify-center text-center">
+        User Details for email searched:
+        <span class="text-3xl font-bold text-red-400">
+          <%= user.username %>
+        </span>
+      </h1>
+    </div>
+    <div class="detailscontainer flex flex-wrap justify-center">
+      <div class="flex justify-center gap-[0.5rem] mt-10">
+        <form class="px-4" action="/search" method="get">
+          <label for="empCode" class="text-2xl px-4 text-red-400 font-semibold"
+            >Emp Code:</label
+          >
+          <input
+            class="text-2xl text-teal-600"
+            id="empCode"
+            type="text"
+            value="<%= user.empCode %>"
+            readonly
+          /><br />
+          <label for="fullName" class="text-2xl px-4 text-red-400 font-semibold"
+            >Name:</label
+          >
+          <input
+            class="text-2xl text-teal-600"
+            id="fullName"
+            type="text"
+            value="<%= user.fullName %>"
+            readonly
+          /><br />
+          <label for="username" class="text-2xl px-4 text-red-400 font-semibold"
+            >Email:</label
+          >
+          <input
+            class="text-2xl text-teal-600"
+            id="username"
+            type="text"
+            value="<%= user.username %>"
+            readonly
+          /><br />
+          <label for="contact" class="text-2xl px-4 text-red-400 font-semibold"
+            >Contact:</label
+          >
+          <input
+            class="text-2xl text-teal-600"
+            id="contact"
+            type="text"
+            value="<%= user.contact %>"
+            readonly
+          /><br />
+          <label for="industry" class="text-2xl px-4 text-red-400 font-semibold"
+            >Industry:</label
+          >
+          <input
+            class="text-2xl text-teal-600"
+            id="industry"
+            type="text"
+            value="<%= user.industry %>"
+            readonly
+          /><br />
+          <label for="role" class="text-2xl px-4 text-red-400 font-semibold"
+            >Role:</label
+          >
+          <input
+            class="text-2xl text-teal-600"
+            id="role"
+            type="text"
+            value="<%= user.role %>"
+            readonly
+          /><br />
+          <label for="location" class="text-2xl px-4 text-red-400 font-semibold"
+            >Location:</label
+          >
+          <input
+            class="text-2xl text-teal-600"
+            id="location"
+            type="text"
+            value="<%= user.location %>"
+            readonly
+          /><br />
+        </form>
+        <div class="dates">
+          <label for="dates" class="text-2xl px-4 text-red-400 font-semibold">
+            Current selection of dates:</label
+          >
+          <ol id="dates" class="list-decimal px-10 text-4xl">
+            <% user.dates.forEach(function(date) { %>
+            <li><%= date %></li>
+            <% }); %>
+          </ol>
+        </div>
+        <div class="countdays">
+          <h2 class="text-2xl px-4 text-red-400 font-semibold">
+            Available Dates Count:
+          </h2>
+          <h3 class="text-center text-8xl text-teal-600 font-bolder">
+            <%= user.dates.length %>
+          </h3>
+        </div>
+      </div>
+    </div>
+    <div class="back m-10">
+      <a
+        class="float-right mt-10 px-5 py-5 bg-red-500 font-semibold rounded-lg hover:bg-teal-600 text-white"
+        href="/admin"
+        >Back to Admin page</a
+      >
+    </div>
+  </body>
+</html>

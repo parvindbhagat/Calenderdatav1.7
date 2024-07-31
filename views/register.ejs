@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration</title>
+    <link rel="stylesheet" href="https://use.typekit.net/oov2wcw.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+  </head>
+
+  <body>
+    <div class="w-full h-screen bg-zinc-300 flex items-center justify-center">
+      <div class="w-[25vw] h-auto bg-zinc-100 px-4 py-5 rounded-md">
+        <h1
+          class="text-4xl tracking-tighter leading-non text-center font-semibold text-zinc-700"
+        >
+          Create new User
+        </h1>
+        <% include ./partials/messages %>
+        <form action="/register" method="post">
+          <input
+            class="border-2 rounded-md mt-2 w-full px-3 py-2"
+            type="text"
+            name="empCode"
+            placeholder=" Employee Code "
+            value="<%= typeof empCode != 'undefined' ? empCode : '' %>"
+          />
+          <input
+            class="border-2 rounded-md mt-2 w-full px-3 py-2"
+            type="text"
+            name="fullName"
+            placeholder=" Full name "
+            value="<%= typeof fullName != 'undefined' ? fullName : '' %>"
+          />
+          <input
+            class="border-2 rounded-md mt-2 w-full px-3 py-2"
+            type="email"
+            name="username"
+            placeholder="email"
+            value="<%= typeof username != 'undefined' ? username : '' %>"
+          />
+          <input
+            class="border-2 rounded-md mt-2 w-full px-3 py-2"
+            type="number"
+            name="contact"
+            placeholder="Contact Number"
+            value="<%= typeof contact != 'undefined' ? contact : '' %>"
+          />
+
+          <select class="mt-2 px-5 py-3" name="role" id="role">
+            <option value="Facilitator">Facilitator</option>
+            <option value="Admin">Admin</option>
+            <!-- Add more options as needed -->
+          </select>
+
+          <input
+            class="border-2 rounded-md mt-2 w-full px-3 py-2"
+            type="text"
+            name="city"
+            placeholder="city"
+            value="<%= typeof city != 'undefined' ? city : '' %>"
+          />
+          <input
+            class="border-2 rounded-md mt-2 w-full px-3 py-2"
+            type="text"
+            name="industry"
+            placeholder="industry"
+            value="<%= typeof industry != 'undefined' ? industry : '' %>"
+          />
+          <input
+            class="border-2 rounded-md mt-2 w-full px-3 py-2"
+            type="password"
+            name="password"
+            placeholder="password"
+            value="<%= typeof password != 'undefined' ? password : '' %>"
+          />
+          <!-- <a class="mt-2 font-semibold text-zinc-500 inline-block" href="#">Forgot Password?</a>  -->
+          <input
+            class="border-2 rounded-full mt-5 w-full px-3 py-2 bg-red-600 text-white"
+            type="submit"
+            value="Creat new User"
+          />
+          <!-- <p
+            class="text-xs font-semibold text-zinc-700 mt-10 w-2/3 mx-auto text-center"
+          >
+            By continuing, you agree to our terms and policies.
+          </p> -->
+        </form>
+        <a
+          class="inline-block mt-7 text-sm font-semibold text-zinc-700 text-center w-full"
+          href="/admin"
+          >Back to Admin Page</a
+        >
+      </div>
+    </div>
+    
+  </body>
+</html>

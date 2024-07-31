@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin page</title>
+    <link rel="stylesheet" href="https://use.typekit.net/oov2wcw.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <Div class="bg-red-400 px-10 flex justify-between w-full">
+      <a class="mt-2 px-5 py-1 text-3xl font-semibold flex left" href="/">
+        <img src="/images/logo-ic.png" alt="Chrysalis Logo ic" />
+        <img src="/images/logo-tx.png" alt="Chrysalis Logo tx" />
+      </a>
+
+      <a
+        class="flex flex-col justify-center text-center px-5 py-5 bg-red-500 font-semibold rounded-lg hover:bg-red-600 text-white"
+        href="/logout"
+        >Logout</a
+      >
+    </Div>
+    <h1 class="text-2xl font-bold m-2 text-left">Hi Admin!</h1>
+    <div class="AdminFeatures flex gap-5 flex-wrap justify-center">
+      <div class="adduser">
+        <a class="text-2xl bg-red-400 hover:bg-teal-600 text-white rounded-lg m-2 p-2" href="/register"
+          >Add New User</a
+        >
+      </div>
+      <div class="resetpassword">
+        <a class="text-2xl bg-red-400 hover:bg-teal-600 text-white rounded-lg m-2 p-2" href="/resetpassword"
+          >Reset Password</a
+        >
+      </div>
+      <div class="exportdata">
+        <a class="text-2xl bg-red-400 hover:bg-teal-600 text-white rounded-lg m-2 p-2" href="/exportuserdata"
+          >Export all User data</a
+        >
+      </div>
+    </div>
+
+    <div class="searchUser flex justify-center">
+      <form action="/admin/search" method="get">
+        <input
+          class="w-[50vmin] px-5 py-5 mt-2 border-2 font-semibold rounded-lg"
+          type="text"
+          name="username"
+          placeholder="Enter Email"
+        />
+        <button
+          type="submit"
+          class="m-10 px-5 py-5 bg-red-500 font-semibold rounded-lg hover:bg-teal-600 text-white"
+        >
+          Search
+        </button>
+      </form>
+    </div>
+    <div class="useroverviewtable">
+      <table class="table-auto m-2 w-[95vw] bg-white border border-gray-300" >
+        <thead class="bg-red-400 text-white">
+          <tr>
+            <th class="border border-gray-300 px-4 py-2">Name</th>
+            <th class="border border-gray-300 px-4 py-2">Role</th>
+            <th class="border border-gray-300 px-4 py-2">Email</th>
+            <th class="border border-gray-300 px-4 py-2">Contact</th>
+            <th class="border border-gray-300 px-4 py-2">Industry</th>
+            <th class="border border-gray-300 px-4 py-2">Dates available</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(user => { %>
+            <tr>
+              <td class="border border-gray-300 px-4 py-2 text-center"><%= user.fullName %></td>
+              <td class="border border-gray-300 px-4 py-2 text-center"><%= user.role %></td>
+              <td class="border border-gray-300 px-4 py-2 text-center"><%= user.username %></td>
+              <td class="border border-gray-300 px-4 py-2 text-center"><%= user.contact %></td>
+              <td class="border border-gray-300 px-4 py-2 text-center"><%= user.industry %></td>
+              <td class="border border-gray-300 px-4 py-2 text-center"><%= user.dates.length %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+</div>
+  </body>
+</html>

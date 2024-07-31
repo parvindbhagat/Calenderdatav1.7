@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>submited your selection.</title>
+    <link rel="stylesheet" href="https://use.typekit.net/oov2wcw.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+</head>
+
+<body class="text-2xl">
+    <Div class="bg-red-400 mb-10 px-10 flex justify-between">
+        <a class="mt-2 px-5 py-1 text-3xl font-semibold flex left" href="/">
+          <img src="/images/logo-ic.png" alt="Chrysalis Logo ic" />
+          <img src="/images/logo-tx.png" alt="Chrysalis Logo tx" />
+        </a>
+  
+        <a
+          class="flex flex-col justify-center text-center px-5 py-5 bg-red-500 font-semibold rounded-lg hover:bg-red-600 text-white"
+          href="/logout"
+          >Logout</a>
+  
+    </Div>
+    
+    <div class="flex justify-center"> Your selection is submitted successfully!</div>
+    <div class="border-2 p-5">
+
+        <p class="text-4xl m-5 p-5">
+            Your current selection is:
+        </p>
+        
+        <ol class="list-decimal ml-10 px-10 text-4xl">
+            <% user.dates.forEach(function(date) { %>
+                <li>  <%= date %></li>
+                <% }); %>
+        </ol>
+    </div>
+    <div class="back m-10">
+        <a class="mt-10 px-5 py-5 bg-red-500 font-semibold rounded-lg hover:bg-teal-600 text-white" href="/profile">Back to Profile</a>
+    </div>
+</body>
+
+</html>
