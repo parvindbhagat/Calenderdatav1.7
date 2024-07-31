@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const plm = require('passport-local-mongoose');
 
 mongoose.connect("mongodb://127.0.0.1:27017/calendar_db");
+// Atlas connection String: mongodb+srv://parvindbhagat:N2DbOtD5LZFcsXTV@cluster0.fginkoc.mongodb.net/
 
 const userSchema = new mongoose.Schema({
   fullName: String,
