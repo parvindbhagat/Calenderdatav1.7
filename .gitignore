@@ -1,0 +1,4 @@
+node_modules
+.ignore.txt
+README.node_modules
+.vscode
