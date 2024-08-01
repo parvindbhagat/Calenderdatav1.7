@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 const plm = require('passport-local-mongoose');
-
+require('dotenv').config();
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://parvindbhagat:N2DbOtD5LZFcsXTV@cluster0.fginkoc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const MONGODB_URI = process.env.MONGODB_URI;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
+const client = new MongoClient(MONGODB_URI, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -30,7 +30,7 @@ run().catch(console.dir);
 
 
 // Connect to MongoDB Atlas
-mongoose.connect(uri)
+mongoose.connect(MONGODB_URI)
 .then(() => {
   console.log('Connected to MongoDB Atlas');
 })
