@@ -107,7 +107,7 @@
         <div
           id="datepicker"
           class="input-group date py-10"
-          data-date-format="mm-dd-yyyy"
+          data-date-format="dd-mm-yyyy"
         >
           <form class="formsubmit" action="/profile" method="post">
             <input
@@ -134,11 +134,11 @@
         </ul>
 
         <% const dateObject = new Date(user.dates[0]); %>
-        <% const monthIndex = dateObject.getMonth();%>
+        <% const monthIndex = dateObject.getDate(); //since dae is saved in ddmmyyyy format, and date object takes yyyymmdd getDate will fetch month%>  
         <% const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];%>
-        <% const month = monthNames[monthIndex]; %>
+        <% const month = monthNames[monthIndex-1]; // -1 is to match monthname since index of monthname array starts with 0%>
 
-        <p> I will be available for <span class="text-4xl underline font-bold text-red-400"> <%= user.dates.length %> day(s)</span>  in <%= month %> .</p>
+        <p> I will be available for <span class="text-4xl underline font-bold text-red-400"> <%= user.dates.length %> day(s)</span>  in <%= month %>.</p>
         <p>
           To make any changes, click calendar icon and submit a new selection
           for whole month.
@@ -165,8 +165,8 @@
             autoclose: false,
             todayHighlight: true,
             multidate: true,
-            //startDate: today,
-            //endDate: lastDayOfMonth
+            startDate: today,
+            endDate: lastDayOfMonth
             
           })
           .datepicker("update", new Date());

@@ -13,7 +13,7 @@ router.get("/", function (req, res, next) {
   res.render("index");
 });
 
-router.get("/register", isAdmin, function (req, res, next) {
+router.get("/register",  function (req, res, next) {
   res.render("register");
 });
 
@@ -271,21 +271,37 @@ router.post("/register", (req, res) => {
   }
 });
 
+// router.post("/profile", isLoggedIn, async (req, res) => {
+//   let dateStrings = req.body.selectedDates.split(","); // Split the input field on commas
+//   let dates = dateStrings.map((dateStr) => {
+//     let date = new Date(dateStr.trim());
+//     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+//       2,
+//       "0"
+//     )}-${String(date.getDate()).padStart(2, "0")}`;
+//   });
+
 router.post("/profile", isLoggedIn, async (req, res) => {
   let dateStrings = req.body.selectedDates.split(","); // Split the input field on commas
+  console.log(dateStrings);
   let dates = dateStrings.map((dateStr) => {
     let date = new Date(dateStr.trim());
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+    // let dateddmmyy = date.toLocaleDateString("en-GB");
+    // console.log(dateddmmyy);
+    return `${String(date.getDate()).padStart(2, "0")}-${String(date.getMonth() + 1).padStart(
       2,
       "0"
-    )}-${String(date.getDate()).padStart(2, "0")}`;
+    )}-${date.getFullYear()}`;
+    console.log(dates);
   });
+  console.log("dates:")
+  console.log(dates);
 
   try {
     const user = await userModel.findOne({
       username: req.session.passport.user,
     });
-    console.log(user);
+    // console.log(user);
     // Find the user by username
     //const user = await User.findOne({ username });
 
@@ -294,7 +310,7 @@ router.post("/profile", isLoggedIn, async (req, res) => {
     }
 
     // Add the dates to the user's "dates" array
-    user.dates = dates;
+    user.dates = dateStrings;
 
     // Save the updated user
     await user.save();
