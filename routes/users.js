@@ -5,6 +5,8 @@ require('dotenv').config();
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const MONGODB_URI = process.env.MONGODB_URI;
 
+// URI sample = 'mongodb+srv://<username>:<password>@cluster0.<partOfClusterURL>.mongodb.net/<databsename>?retryWrites=true&w=majority&appName=Cluster0'
+
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(MONGODB_URI, {
   serverApi: {
@@ -44,8 +46,14 @@ const userSchema = new mongoose.Schema({
   username: String,
  //email to be used as username, username field is mandatory for passport local
   location: String,
-  industry: String,
-  role: String,
+  industry: {
+    type: [String],
+    default: []
+  },
+  role: {
+    type: String,
+    default: "Facilitator"
+  },
   empCode: String,
   contact: Number,
   dates:{

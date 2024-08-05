@@ -6,6 +6,7 @@ const localStrategy = require("passport-local");
 const exceljs = require("exceljs");
 const flash = require("connect-flash");
 
+
 passport.use(new localStrategy(userModel.authenticate()));
 
 /* GET home page. */
@@ -13,7 +14,7 @@ router.get("/", function (req, res, next) {
   res.render("index");
 });
 
-router.get("/register",  function (req, res, next) {
+router.get("/register", isAdmin, function (req, res, next) {
   res.render("register");
 });
 
@@ -46,7 +47,7 @@ router.get("/submitdate", isLoggedIn, async function (req, res, next) {
 // });
 router.get("/admin", isAdmin, async function (req, res) {
   userModel
-    .find({}) //role: { $ne: "Admin" }
+    .find({role: { $ne: "Admin" }}) //role: { $ne: "Admin" }
     .then((users) => {
       //console.log(users);
       res.render("admin", { users });
@@ -74,6 +75,53 @@ router.get("/admin/search", isAdmin, async (req, res) => {
     return res.send("An error occurred");
   }
 });
+
+// render Advance Search page for admin
+
+router.get('/advancesearch', isAdmin, async (req, res) => {
+  
+  userModel
+  .find({role: { $ne: "Admin" }}) //role: { $ne: "Admin" }
+  .then((users) => {
+    //console.log(users);
+    res.render("advancesearch", { users });
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+  // const matchingUsers = await User.find({ dates: { $in: searchedDates } });
+  
+});
+
+
+router.post('/advancesearch', async (req, res) => {
+  const dates = req.body.searchedDates; 
+  const industry = req.body.industry;
+  const searchedDates = dates.split(','); //.split(',')
+  const searchedIndustries = industry.split(',');
+  if(industry != ""){
+  await userModel
+  .find({ industry: { $in: searchedIndustries}, dates: { $in: searchedDates }}) //role: { $ne: "Admin" }
+  .then((users) => {
+    //console.log(users);
+    res.render("advancesearch", { users });
+  })
+  .catch((err) => {
+    console.error(err);
+  });} else{
+    await userModel
+  .find({ dates: { $in: searchedDates }}) //role: { $ne: "Admin" }
+  .then((users) => {
+    //console.log(users);
+    res.render("advancesearch", { users });
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+  }
+});
+
+
 
 router.post("/resetpassword", async (req, res) => {
   const username = req.body.username;
@@ -160,7 +208,7 @@ router.post("/changepassword", async (req, res) => {
         );
         res.redirect("/profile");
       }
-    } catch (err) {
+    } catch (err) { 
       console.error(err);
       return req.flash(
         "error",
@@ -191,6 +239,17 @@ router.post("/changepassword", async (req, res) => {
 // });
 
 router.post("/register", (req, res) => {
+  const industryStrings =  req.body.industry;
+  const industryString = industryStrings.split(",");
+  console.log(typeof industryStrings);
+  console.log(typeof industryString);
+  console.log(`industrySting ${industryString}`);
+    const industries = industryString.map((industryStr) => {
+    const industry = industryStr.trim();
+    console.log(`industry ${industry}`);
+    return industry;
+  });
+  console.log(`industries ${industries}`);
   const {
     fullName,
     contact,
@@ -255,7 +314,7 @@ router.post("/register", (req, res) => {
           fullName: req.body.fullName,
           contact: req.body.contact, // getting data from input tags in register page to save in db schema, input tag name must match req.body.{tag_naam}
           username: req.body.username,
-          industry: req.body.industry,
+          industry: industries,
           location: req.body.city,
           role: req.body.role,
           empCode: req.body.empCode,
@@ -271,19 +330,11 @@ router.post("/register", (req, res) => {
   }
 });
 
-// router.post("/profile", isLoggedIn, async (req, res) => {
-//   let dateStrings = req.body.selectedDates.split(","); // Split the input field on commas
-//   let dates = dateStrings.map((dateStr) => {
-//     let date = new Date(dateStr.trim());
-//     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-//       2,
-//       "0"
-//     )}-${String(date.getDate()).padStart(2, "0")}`;
-//   });
+// to post selected dates in database
 
 router.post("/profile", isLoggedIn, async (req, res) => {
   let dateStrings = req.body.selectedDates.split(","); // Split the input field on commas
-  console.log(dateStrings);
+  // console.log(dateStrings);
   let dates = dateStrings.map((dateStr) => {
     let date = new Date(dateStr.trim());
     // let dateddmmyy = date.toLocaleDateString("en-GB");
@@ -294,8 +345,8 @@ router.post("/profile", isLoggedIn, async (req, res) => {
     )}-${date.getFullYear()}`;
     console.log(dates);
   });
-  console.log("dates:")
-  console.log(dates);
+  // console.log("dates:")
+  // console.log(dates);
 
   try {
     const user = await userModel.findOne({

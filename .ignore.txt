@@ -173,3 +173,9 @@ const today = new Date();   // last date to submit selection   .dev
       return res.status(500).json({ message: "Internal server error" });
     }
   }
+
+  ============================ date conversion to ddmmyyy================
+  let date = new Date();  // gives todays date with time and region in us format
+  let dateWithoutTime = date.toLocaleDateString();  /// makes the date without time and region in US format
+  let mydate = dateWithoutTime.toLocaleString('en-GB'); gives out date in ddmmyyyy format
+  ========================================================================

@@ -54,10 +54,13 @@
             placeholder="Contact Number"
             value="<%= typeof contact != 'undefined' ? contact : '' %>"
           />
-
-          <select class="mt-2 px-5 py-3" name="role" id="role">
+          <label for="role">Role</label>
+          <select class="mt-2 px-3 py-1" name="role" id="role">
+            <option value="">Choose a Role</option>
             <option value="Facilitator">Facilitator</option>
             <option value="Admin">Admin</option>
+            <option value="Designer">Designer</option>
+            <option value="Consultant">Consultant</option>
             <!-- Add more options as needed -->
           </select>
 
@@ -68,13 +71,25 @@
             placeholder="city"
             value="<%= typeof city != 'undefined' ? city : '' %>"
           />
-          <input
-            class="border-2 rounded-md mt-2 w-full px-3 py-2"
-            type="text"
-            name="industry"
-            placeholder="industry"
-            value="<%= typeof industry != 'undefined' ? industry : '' %>"
-          />
+          <label for="industry">Industry</label>
+          <input class="w-full" type="text" id="inputBox" name="industry" readonly placeholder="Select Industry">  
+          <select class="mt-2 px-3 py-1"  id="industry" multiple="multiple" type="checkbox">
+            <option onclick="toggleOption('Consumer')" value="Consumer">Consumer</option>
+            <option onclick="toggleOption('E-commerce')" value="E-commerce">E-Commerce</option>
+            <option onclick="toggleOption('Finance and Banking')" value="Finance and Banking">Finance & Banking</option>
+            <option onclick="toggleOption('Government and International')" value="Government and International">Govt & International</option>
+            <option onclick="toggleOption('Infrastructure and Manufacturing')" value="Infrastructure and Manufacturing">Infrastructure & Manufacturing</option>
+            <option onclick="toggleOption('Insurance')" value="Insurance">Insurance</option>
+            <option onclick="toggleOption('IT')" value="IT">IT</option>
+            <option onclick="toggleOption('ITES')" >ITES</option>
+            <option onclick="toggleOption('Media and Communication')" value="Media and Communication">Media & Communication</option>
+            <option onclick="toggleOption('NGO')" value="NGO">NGO</option>
+            <option onclick="toggleOption('Pharmaceuticals and Healthcare')" value="Pharmaceuticals and Healthcare">Pharmceuticals & Healthcare</option>
+            <option onclick="toggleOption('ConPractice Industrysumer')" value="Practice Industry">Practice Industry</option>
+            <option onclick="toggleOption('Services')" value="Services">Services</option>
+            <option onclick="toggleOption('Telecom')" value="Telecom">Telecom</option>
+              <!-- Add more options as needed -->
+          </select>
           <input
             class="border-2 rounded-md mt-2 w-full px-3 py-2"
             type="password"
@@ -101,6 +116,20 @@
         >
       </div>
     </div>
-    
+    <script>
+      function toggleOption(option) {
+          const inputBox = document.getElementById('inputBox');
+          let currentValue = inputBox.value.split(', ').filter(Boolean);
+          const index = currentValue.indexOf(option);
+
+          if (index > -1) {
+              currentValue.splice(index, 1);
+          } else {
+              currentValue.push(option);
+          }
+
+          inputBox.value = currentValue.join(', ');
+      }
+  </script>
   </body>
 </html>

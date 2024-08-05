@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile: <%= user.fullName %></title>
+    <title>Admin || Advance Search</title>
     <link rel="stylesheet" href="https://use.typekit.net/oov2wcw.css" />
     <link
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
@@ -65,17 +65,21 @@
             background-color: #E95757;
             margin: 2px;
                 } 
+
+        .hidden{
+            display: none;
+        }
     </style>
   </head>
 
   <body class="text-4xl w-full">
     <Div class="bg-red-400 px-10 flex justify-between w-full">
-      <a class="mt-2 px-5 py-1 text-3xl font-semibold flex left" href="/">
+      <a class="mt-2 px-5 py-1 text-2xl font-semibold flex left" href="/">
         <img src="/images/logo-ic.png" alt="Chrysalis Logo ic" />
         <img src="/images/logo-tx.png" alt="Chrysalis Logo tx" />
       </a>
         <div class="flex gap-2">
-          <a class="flex flex-col justify-center text-center px-5 py-5 bg-red-500 font-semibold rounded-lg hover:bg-red-600 text-white" href="/changepassword">Change Password</a>
+          <!-- <a class="flex flex-col justify-center text-center px-5 py-5 bg-red-500 font-semibold rounded-lg hover:bg-red-600 text-white" href="/changepassword">Change Password</a> -->
 
           <a
           class="flex flex-col justify-center text-center px-5 py-5 bg-red-500 font-semibold rounded-lg hover:bg-red-600 text-white"
@@ -85,67 +89,88 @@
 
     </Div>
     <div class="font-3xl font-semibold flex items-center">
-      <h1 class="w-full text-center mt-3 mb-3 text-4xl font-bold">Welcome to Facilitator Availability Calendar</h1>
+      <h1 class="w-full text-center mt-3 mb-3 text-xl font-bold">Advance Search</h1>
     </div>
-    <h1 class="w-full text-center text-3xl font-semibold py-2">
-      Hi <%= user.fullName %>!
-    </h1>
-    <ul
-      class="w-[100vw] mt-5 mb-5 flex flex-wrap justify-between font-semibold font-medium items-center border-2 px-5"
-    >
-      <li><span class="text-red-400" >Email</span>: <%= user.username %></li>
-      <li><span class="text-red-400" >Contact Number</span>: <%= user.contact %></li>
-      <li><span class="text-red-400" >City</span>: <%= user.location %></li>
-      <li><span class="text-red-400" >Industry</span>: <%= user.industry %></li>
-      <li><span class="text-red-400" >Role</span>: <%= user.role %></li>
-    </ul>
+    <div class="back float-end">
+      <a class="ml-2 px-5 py-5 bg-red-500 font-semibold rounded-lg hover:bg-teal-600 text-white" href="/admin">Back to Admin page</a>
+  </div>
+    
     <div class="flex place-content-center mt-10 gap-10">
       <div class="calendarcontainer border-2 rounded-md px-10 py-10">
         <label mt-10px>
-          Please submit your availability.
+          Please pick an Industry and date(s) to see Facilitaors available.
         </label>
         <div
           id="datepicker"
           class="input-group date py-10"
           data-date-format="dd-mm-yyyy"
         >
-          <form class="formsubmit" action="/profile" method="post">
+          <form class="formsubmit" action="/advancesearch" method="post">
+            <select class=" px-3 py-1 border-1" name="industry" id="industry">
+              <option value="">Choose Industry</option>
+              <option value="Consumer">Consumer</option>
+            <option value="E-commerce">E-Commerce</option>
+            <option value="Finance and Banking">Finance & Banking</option>
+            <option value="Government and International">Govt & International</option>
+            <option value="Infrastructure and Manufacturing">Infrastructure & Manufacturing</option>
+            <option value="Insurance">Insurance</option>
+            <option value="IT">IT</option>
+            <option value="ITES">ITES</option>
+            <option value="Media and Communication">Media & Communication</option>
+            <option value="NGO">NGO</option>
+            <option value="Pharmaceuticals and Healthcare">Pharmceuticals & Healthcare</option>
+            <option value="Practice Industry">Practice Industry</option>
+            <option value="Services">Services</option>
+            <option value="Telecom">Telecom</option> 
+                <!-- Add more options as needed -->
+            </select>
             <input
               class="form-control "
               type="text"
               readonly
-              name="selectedDates" style="max-width:65vw"
+              name="searchedDates" style="max-width:65vw"
               onchange="adjustWidth()"
             />
             <span class="input-group-addon bg-transparent border-transparent">
               <i class="glyphicon glyphicon-calendar "></i>
             </span>
-            <button class="border-2 px-4 rounded-lg text-white bg-red-400 hover:bg-teal-600 " type="submit">Submit</button>
+            <button class=" w-auto border-2 px-4 rounded-lg text-white bg-red-400 hover:bg-teal-600 " type="submit" onclick="showHideToggle()">Search</button>
+            <a class=" w-auto border-2 px-4 rounded-lg text-white bg-red-400 hover:bg-teal-600 "  href="/advancesearch">All Users</a>
           </form>
         </div>
       </div>
 
-      <div class="showdates flex flex-col border-2 rounded-md px-10 py-10 w-1/5">
-        <p>Your current selection is:</p>
-        <ul class="list-decimal py-10 px-10 text-4xl">
-          <% user.dates.forEach(function(date) { %>
-          <li>  <%= date %></li>
-          <% }); %>
-        </ul>
-
-        <% const dateObject = new Date(user.dates[0]); %>
-        <% const monthIndex = dateObject.getDate(); //since date is saved in ddmmyyyy format, and date object takes yyyymmdd getDate will fetch month%>  
-        <% const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];%>
-        <% const month = monthNames[monthIndex-1]; // -1 is to match monthname since index of monthname array starts with 0%>
-
-        <p> I will be available for <span class="text-4xl underline font-bold text-red-400"> <%= user.dates.length %> day(s)</span>  in <%= month %>.</p>
-        <p>
-          To make any changes, click calendar icon and submit a new selection
-          for whole month.
-        </p>
-      </div>
+      
     </div>
 
+    <div class="tableview" id="resultTable" >
+
+    
+    <table class="table-striped table-auto m-2 w-[95vw] bg-white border border-gray-300" >
+        <thead class="bg-red-400 text-white">
+          <tr>
+            <th class="border border-gray-300 px-4 py-2">Name</th>
+            <th class="border border-gray-300 px-4 py-2">Role</th>
+            <th class="border border-gray-300 px-4 py-2">Email</th>
+            <th class="border border-gray-300 px-4 py-2">Contact</th>
+            <th class="border border-gray-300 px-4 py-2">Industry</th>
+            <th class="border border-gray-300 px-4 py-2">Dates available</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(user => { %>
+            <tr>
+              <td class="border border-gray-300 px-4 py-2 text-center"><%= user.fullName %></td>
+              <td class="border border-gray-300 px-4 py-2 text-center"><%= user.role %></td>
+              <td class="border border-gray-300 px-4 py-2 text-center"><%= user.username %></td>
+              <td class="border border-gray-300 px-4 py-2 text-center"><%= user.contact %></td>
+              <td class="border border-gray-300 px-4 py-2 text-center"><%= user.industry %></td>
+              <td class="border border-gray-300 px-4 py-2 text-center"><%= user.dates %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
     <script
       src="https://code.jquery.com/jquery-3.6.1.min.js"
       integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
