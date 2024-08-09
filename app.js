@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const expressSession = require('express-session');
 const flash = require('connect-flash');
-// const expressLayouts = require('express-ejs-layouts');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -13,7 +12,6 @@ const passport = require('passport');
 
 var app = express();
 
-///  app.use(expressLayouts);  not using express-ejs-layouts  .dev
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -51,6 +49,7 @@ app.use((req, res, next) => {
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  res.render('404');
   next(createError(404));
 });
 

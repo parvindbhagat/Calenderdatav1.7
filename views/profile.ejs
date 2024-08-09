@@ -6,6 +6,10 @@
     <title>Profile: <%= user.fullName %></title>
     <link rel="stylesheet" href="https://use.typekit.net/oov2wcw.css" />
     <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
       rel="stylesheet"
       type="text/css"
@@ -48,23 +52,23 @@
         color: #333;
       }
       /* decoration for the numbering in OL */
-      .showdates ul { 
-            list-style: none; 
-            counter-reset: num; 
-        } 
-  
-        .showdates ul li { 
-            counter-increment: num; 
-        } 
-  
-        .showdates ul li::before { 
-            content: counter(num) "."; 
-            color: white; 
-            border: 1px solid white;
-            /* border-radius: 25%; */
-            background-color: #E95757;
-            margin: 2px;
-                } 
+      .showdates ul {
+        list-style: none;
+        counter-reset: num;
+      }
+
+      .showdates ul li {
+        counter-increment: num;
+      }
+
+      .showdates ul li::before {
+        content: counter(num) ".";
+        color: white;
+        border: 1px solid white;
+        /* border-radius: 25%; */
+        background-color: #e95757;
+        margin: 2px;
+      }
     </style>
   </head>
 
@@ -74,18 +78,24 @@
         <img src="/images/logo-ic.png" alt="Chrysalis Logo ic" />
         <img src="/images/logo-tx.png" alt="Chrysalis Logo tx" />
       </a>
-        <div class="flex gap-2">
-          <a class="flex flex-col justify-center text-center px-5 py-5 bg-red-500 font-semibold rounded-lg hover:bg-red-600 text-white" href="/changepassword">Change Password</a>
+      <div class="flex gap-2">
+        <a
+          class="flex flex-col justify-center text-center px-5 py-5 bg-red-500 font-semibold rounded-lg hover:bg-red-600 text-white"
+          href="/changepassword"
+          ><i class="ri-key-line"></i> Change Password</a
+        >
 
-          <a
+        <a
           class="flex flex-col justify-center text-center px-5 py-5 bg-red-500 font-semibold rounded-lg hover:bg-red-600 text-white"
           href="/logout"
-          >Logout</a>
-        </div>
-
+          ><i class="ri-logout-box-r-line"></i> Logout</a
+        >
+      </div>
     </Div>
     <div class="font-3xl font-semibold flex items-center">
-      <h1 class="w-full text-center mt-3 mb-3 text-4xl font-bold">Welcome to Facilitator Availability Calendar</h1>
+      <h1 class="w-full text-center mt-3 mb-3 text-4xl font-bold">
+        Welcome to Facilitator Availability Calendar
+      </h1>
     </div>
     <h1 class="w-full text-center text-3xl font-semibold py-2">
       Hi <%= user.fullName %>!
@@ -93,17 +103,17 @@
     <ul
       class="w-[100vw] mt-5 mb-5 flex flex-wrap justify-between font-semibold font-medium items-center border-2 px-5"
     >
-      <li><span class="text-red-400" >Email</span>: <%= user.username %></li>
-      <li><span class="text-red-400" >Contact Number</span>: <%= user.contact %></li>
-      <li><span class="text-red-400" >City</span>: <%= user.location %></li>
-      <li><span class="text-red-400" >Industry</span>: <%= user.industry %></li>
-      <li><span class="text-red-400" >Role</span>: <%= user.role %></li>
+      <li><span class="text-red-400">Email</span>: <%= user.username %></li>
+      <li>
+        <span class="text-red-400">Contact Number</span>: <%= user.contact %>
+      </li>
+      <li><span class="text-red-400">City</span>: <%= user.location %></li>
+      <li><span class="text-red-400">Industry</span>: <%= user.industry %></li>
+      <li><span class="text-red-400">Role</span>: <%= user.role %></li>
     </ul>
     <div class="flex place-content-center mt-10 gap-10">
       <div class="calendarcontainer border-2 rounded-md px-10 py-10">
-        <label mt-10px>
-          Please submit your availability.
-        </label>
+        <label mt-10px> Please submit your availability. </label>
         <div
           id="datepicker"
           class="input-group date py-10"
@@ -111,34 +121,48 @@
         >
           <form class="formsubmit" action="/profile" method="post">
             <input
-              class="form-control "
+              class="form-control"
               type="text"
               readonly
-              name="selectedDates" style="max-width:65vw"
+              name="selectedDates"
+              style="max-width: 65vw"
               onchange="adjustWidth()"
             />
             <span class="input-group-addon bg-transparent border-transparent">
-              <i class="glyphicon glyphicon-calendar "></i>
+              <i class="glyphicon glyphicon-calendar"></i>
             </span>
-            <button class="border-2 px-4 rounded-lg text-white bg-red-400 hover:bg-teal-600 " type="submit">Submit</button>
+            <button
+              class="border-2 px-4 rounded-lg text-white bg-red-400 hover:bg-teal-600"
+              type="submit"
+            >
+              Submit
+            </button>
           </form>
         </div>
       </div>
 
-      <div class="showdates flex flex-col border-2 rounded-md px-10 py-10 w-1/5">
+      <div
+        class="showdates flex flex-col border-2 rounded-md px-10 py-10 w-1/5"
+      >
         <p>Your current selection is:</p>
         <ul class="list-decimal py-10 px-10 text-4xl">
           <% user.dates.forEach(function(date) { %>
-          <li>  <%= date %></li>
+          <li><%= date %></li>
           <% }); %>
         </ul>
 
-        <% const dateObject = new Date(user.dates[0]); %>
-        <% const monthIndex = dateObject.getDate(); //since date is saved in ddmmyyyy format, and date object takes yyyymmdd getDate will fetch month%>  
-        <% const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];%>
-        <% const month = monthNames[monthIndex-1]; // -1 is to match monthname since index of monthname array starts with 0%>
+        <% const dateObject = new Date(user.dates[0]); %> 
+        <% const monthIndex = dateObject.getDate(); //since date is saved in ddmmyyyy format, and dateobject takes yyyymmdd getDate will fetch month%>
+         <% const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];%>
+          <% const month = monthNames[monthIndex-1]; // -1 is to match monthname since index of monthname array starts with 0%>
 
-        <p> I will be available for <span class="text-4xl underline font-bold text-red-400"> <%= user.dates.length %> day(s)</span>  in <%= month %>.</p>
+        <p>
+          I will be available for
+          <span class="text-4xl underline font-bold text-red-400">
+            <%= user.dates.length %> day(s)</span
+          >
+          in <%= month %>.
+        </p>
         <p>
           To make any changes, click calendar icon and submit a new selection
           for whole month.
@@ -157,8 +181,12 @@
         input.style.width = input.value.length * 6 + "px"; // 6px per character
       }
       var today = new Date();
-      var lastDayOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0);
-            console.log(today);
+      var lastDayOfMonth = new Date(
+        today.getFullYear(),
+        today.getMonth() + 1,
+        0
+      );
+      console.log(today);
       $(function () {
         $("#datepicker")
           .datepicker({
@@ -166,8 +194,7 @@
             todayHighlight: true,
             multidate: true,
             startDate: today,
-            endDate: lastDayOfMonth
-            
+            endDate: lastDayOfMonth,
           })
           .datepicker("update", new Date());
       });
