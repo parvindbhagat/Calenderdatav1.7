@@ -9,6 +9,7 @@ const flash = require('connect-flash');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const passport = require('passport');    
+require('dotenv').config();
 
 var app = express();
 
